@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
-import SideBar from './components/SideBar';
-import WishList from './components/WishList';
-import Orders from './components/Orders';
-import Cart from './components/Cart';
+import Header from './components/Header';
 import Footer from './components/Footer';
-import { Route, Routes,Navigate} from 'react-router-dom';
-
+import RoutesController from './Routes/RoutesController';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
   const [login, setLogin] = useState(false);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-  const [wishList, setWishList] = useState(JSON.parse(localStorage.getItem('wishList')) ||[]);
-  const [Order,setOrder] = useState(JSON.parse(localStorage.getItem('order')) ||[]);
+  const [wishList, setWishList] = useState(JSON.parse(localStorage.getItem('wishList')) || []);
+  const [Order, setOrder] = useState(JSON.parse(localStorage.getItem('order')) || []);
   const [menuPage, setMenuPage] = useState('Electronics');
 
   useEffect(() => {
@@ -38,10 +34,7 @@ function App() {
     if (storedOrders) {
       setOrder(JSON.parse(storedOrders));
     }
-   
-   
   }, []);
-
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -54,7 +47,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem('order', JSON.stringify(Order));
   }, [Order]);
-
 
   const handleLogin = (isLoggedIn) => {
     setLogin(isLoggedIn);
@@ -77,52 +69,55 @@ function App() {
     }
   };
 
-  const addToWishList = (item) =>
-  {
-    const existingWishList = wishList.find((wishListItem)=>wishListItem.description=== item.description);
+  const addToWishList = (item) => {
+    const existingWishList = wishList.find((wishListItem) => wishListItem.description === item.description);
 
-    if(existingWishList)
-    {
+    if (existingWishList) {
       toast.warning("Already in WishList..");
       const updatedWishList = wishList.map((wishListItem) =>
         wishListItem.description === item.description
-          ? { ...wishListItem}
+          ? { ...wishListItem }
           : wishListItem
       );
-      setWishList(updatedWishList); 
-    }else
-    {
-      setWishList([...wishList,item]);
+      setWishList(updatedWishList);
+    } else {
+      setWishList([...wishList, item]);
     }
-   
-  
   };
 
   return (
-  
     <div className='App'>
       {login ? (
         <div className='container mx-auto'>
-          <ToastContainer autoClose={900}/>
-          <SideBar cart={cart} wishList={wishList} addToCart={addToCart} Order={Order} setWishList={setWishList} setMenuPage={setMenuPage} setOrder={setOrder}/>
-
-         <Routes>
-            <Route index path='/' element={<HomePage addToCart={addToCart} cart={cart} setCart={setCart} 
-            addToWishList={addToWishList} setMenuPage={setMenuPage} menuPage={menuPage}/>} />
-            <Route path='/WishList' element={<WishList wishList={wishList} setWishList={setWishList} addToCart={addToCart} />} />
-            <Route path='/Cart' element={<Cart cart={cart} setCart={setCart} setOrder={setOrder}/>} />
-            <Route path='/Orders' element={<Orders Order={Order} setOrder={setOrder} />} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-         
+          <ToastContainer autoClose={900} />
+          <Header 
+            cart={cart} 
+            wishList={wishList} 
+            addToCart={addToCart} 
+            Order={Order} 
+            setWishList={setWishList} 
+            setMenuPage={setMenuPage} 
+            setOrder={setOrder}
+          />
+          <RoutesController 
+            addToCart={addToCart}
+            cart={cart}
+            setCart={setCart}
+            addToWishList={addToWishList}
+            setMenuPage={setMenuPage}
+            menuPage={menuPage}
+            wishList={wishList}
+            setWishList={setWishList}
+            Order={Order}
+            setOrder={setOrder}
+          />
+          <Footer />
         </div>
       ) : (
         <LoginPage handleLogin={handleLogin} />
       )}
-      <Footer/>
+      
     </div>
-    
   );
 }
 

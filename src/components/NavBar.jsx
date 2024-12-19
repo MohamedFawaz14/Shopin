@@ -2,7 +2,7 @@ import React from 'react';
 
 function NavBar({setMenuPage}) {
   return (
-  <div className='Navbar flex justify-evenly'>
+  <div className='Navbar flex justify-evenly '>
   
     <button onClick={() => setMenuPage('Electronics')}><div className='Electronics '>
      

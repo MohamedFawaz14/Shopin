@@ -3,7 +3,7 @@ import React from 'react'
 
 function Footer() {
   return (
-  <div className='Footer bg-black p-5 container mx-auto max-w-full mt-20 flex justify-around' >
+  <div className='Footer bg-black p-5 container mx-auto max-w-full mt-20 flex justify-around top-0' >
     <div className='lg:me-96'>
         <p className='text-white font-semibold text-sm lg:text-lg'>@Designed and Developed by Fawaz </p>
     </div>
